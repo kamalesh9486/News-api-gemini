@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI News Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 50%;
+            margin: auto;
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            background: #007BFF;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        #newsResults, #answer {
+            background: #eef;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            min-height: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h1>AI News Chatbot</h1>
+    
+    <div class="container">
+        <label>Enter News Topic:</label>
+        <input type="text" id="newsTopic" placeholder="e.g., Technology">
+        <button onclick="fetchNews()">Fetch News</button>
+        
+        <h2>News Results</h2>
+        <div id="newsResults"></div>
+        
+        <hr>
+        
+        <label>Ask a Question about the News:</label>
+        <input type="text" id="userQuestion" placeholder="e.g., What is the latest update?">
+        <button onclick="askQuestion()">Ask</button>
+        
+        <h2>Answer</h2>
+        <div id="answer"></div>
+    </div>
+
+    <script>
+        async function fetchNews() {
+            const topic = document.getElementById("newsTopic").value;
+            const response = await fetch(`http://127.0.0.1:8000/fetch_news/?query=${topic}`);
+            const data = await response.json();
+            document.getElementById("newsResults").innerText = data.news || "No news found.";
+        }
+
+        async function askQuestion() {
+            const question = document.getElementById("userQuestion").value;
+            const response = await fetch(`http://127.0.0.1:8000/ask_news/?user_question=${question}`);
+            const data = await response.json();
+            document.getElementById("answer").innerText = data.answer || "No answer found.";
+        }
+    </script>
+</body>
+</html>
